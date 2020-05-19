@@ -1,74 +1,62 @@
 ﻿  ObjectRecognition.cpp
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(32,57): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(32,57): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(32,33): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(32,33): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(34,60): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(34,60): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(34,35): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(34,35): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(72,49): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(72,49): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=float
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(73,72): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(73,72): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=float
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(73,49): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(73,49): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=float
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(74,52): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(74,52): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=float
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(88,10): warning C4244: 'inizializzazione': conversione da '_Tp' a 'float'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(102,50): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
-          [
-              _Tp=double
-          ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(90,101): warning C4244: '=': conversione da '_Tp' a '_Tp'. Possibile perdita di dati.
-          with
-          [
-              _Tp=double
-          ]
-          and
           [
               _Tp=float
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(91,101): warning C4244: '=': conversione da '_Tp' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(103,73): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
-          [
-              _Tp=double
-          ]
-          and
           [
               _Tp=float
           ]
-C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\Lab6\ObjectRecognition.cpp(92,101): warning C4244: '=': conversione da '_Tp' a '_Tp'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(103,50): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
           with
-          [
-              _Tp=double
-          ]
-          and
           [
               _Tp=float
           ]
-  Lab6.vcxproj -> C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Lab6\x64\Debug\Lab6.exe
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\ObjectRecognition.cpp(104,53): warning C4244: 'argomento': conversione da 'int' a '_Tp'. Possibile perdita di dati.
+          with
+          [
+              _Tp=float
+          ]
+  Lab6.vcxproj -> C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\x64\Debug\Lab6.exe
