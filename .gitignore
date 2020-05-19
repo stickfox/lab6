@@ -2,6 +2,5 @@
 # Il file gitignore è stato creato automaticamente da Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
 /data/video.mov
-/out/build/x64-Debug
+/.vs/Lab6/v16
