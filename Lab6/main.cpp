@@ -28,10 +28,28 @@ int main(int argc, char** argv) {
 		cout << "Error: unable to read file " << object_path << endl;
 	}
 	ObjectRecognition recognition = ObjectRecognition(video, object);
+	ObjectTracking tracking = ObjectTracking();
 	
-	
-	/* Create PanoramicImage object and compute final panorama image */
-	recognition.getMatching();
+	int k = 0;
+	cv::Mat frame, previous_frame;
+	std::vector<cv::Point2f> matching_points, matched_points;
+	std::vector<char> error;
+
+	if (video.isOpened()) {
+		for (;;) {
+			video >> frame;
+			if (k == 0) {
+				matched_points = recognition.getMatchingPoints(frame, object);
+				//previous_frame = frame;
+			}
+			else {
+				//matching_points = tracking.getTrackingPoints(frame, previous_frame, matched_points);
+				//previous_frame = frame;
+			}
+			k++;
+		}
+	}
+
 
 	/*
 	cv::namedWindow("Final Panorama", WINDOW_AUTOSIZE);

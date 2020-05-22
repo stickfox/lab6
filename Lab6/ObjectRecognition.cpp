@@ -24,7 +24,7 @@ void ObjectRecognition::computeFeatures(cv::Mat projection, std::vector<cv::KeyP
 
 
 /* Compute the initial cutting points in two consecutive images */
-void ObjectRecognition::getTranslation(cv::Mat video_image, cv::Mat object_image) {
+std::vector<cv::Point2f> ObjectRecognition::getMatchingPoints(cv::Mat video_image, cv::Mat object_image) {
 	std::vector<cv::KeyPoint> keypoint1, keypoint2;
 	cv::Mat descriptor1, descriptor2;
 	std::vector<cv::DMatch> matches;
@@ -100,20 +100,34 @@ void ObjectRecognition::getTranslation(cv::Mat video_image, cv::Mat object_image
 	cv::imshow("MATCH", matching);
 	cv::waitKey(0);
 
+	return inliers2;
 }
 
-void ObjectRecognition::getMatching() {
-	int k = 0;
-	cv::Mat frame;
 
-	if (video.isOpened()) {
-		for (;;) {
-			video >> frame;
-			if (k == 0) {
-				getTranslation(frame, object);
-			}
-			k++;
-		}
-	}
+/* Draw a rectangul on the regnized object */
+void ObjectRecognition::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, cv::Mat previous_points) {
+	/* Find the mask that highlights the inliers */
+	cv::Mat h;
+	cv::Mat inlier_mask;
+	float ransacThreshold = 3.0;
+	h = cv::findHomography(previous_points, points, RANSAC, ransacThreshold, inlier_mask);
+	cout << h << endl;
 
+	// Get the corners from the image ( the object to be "detected" )
+	std::vector<cv::Point2f> obj_corners(4);
+	obj_corners[0] = cv::Point2f(0, 0);
+	obj_corners[1] = cv::Point2f(object.cols - 1, 1);
+	obj_corners[2] = cv::Point2f(object.cols - 1, object.rows - 1);
+	obj_corners[3] = cv::Point2f(1, object.rows - 1);
+	std::vector<cv::Point2f> scene_corners(4);
+	scene_corners[0] = cv::Point2f(1, 1);
+
+	perspectiveTransform(obj_corners, scene_corners, h);
+	//Draw lines between the corners (the mapped object in the scene )
+	cv::line(*image, scene_corners[0], scene_corners[1], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, scene_corners[1], scene_corners[2], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, scene_corners[2], scene_corners[3], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, scene_corners[3], scene_corners[0], cv::Scalar(0, 0, 255), 2);
+
+	//return scene_corners;
 }

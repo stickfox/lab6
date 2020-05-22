@@ -23,15 +23,15 @@ public:
 	/* Constructor */
 	ObjectRecognition(cv::VideoCapture vid_cap, cv::Mat obj);
 
-	/* Find final panorama merging together the images */
-	void getMatching();
+	/* Compute the initial cutting points in two consecutive images */
+	std::vector<cv::Point2f> getMatchingPoints(cv::Mat video_image, cv::Mat object_image);
+
+	/* Draw a rectangul on the regnized object */
+	void drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, cv::Mat previous_points);
 
 private:
 
 	/* Compute features of an image using ORB */
 	void computeFeatures(cv::Mat projection, std::vector<cv::KeyPoint>* keypoint, cv::Mat* descriptor);
-
-	/* Compute the initial cutting points in two consecutive images */
-	void getTranslation(cv::Mat video_image, cv::Mat object_image);
 
 };

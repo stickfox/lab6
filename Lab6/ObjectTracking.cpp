@@ -9,13 +9,13 @@ using namespace cv;
 using namespace std;
 
 /* Constructor */
-ObjectTracking::ObjectTracking(cv::String path, double half_FoV) {
-	angle = half_FoV;
-	files = std::vector<cv::String>();
-	cv::glob(path, files);
-	if (files.size() == 0) {
-		cout << "Error: unable to load files from path " << path << endl;
-	}
-	matcher = cv::BFMatcher(cv::NORM_HAMMING, true);
-	orb = cv::ORB::create(MAX_FEATURES);
+ObjectTracking::ObjectTracking() {
+}
+
+std::vector<cv::Point2f> getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points) {
+	std::vector<cv::Point2f> matching_points;
+	std::vector<uchar> status;
+	std::vector<float> error;
+	cv::calcOpticalFlowPyrLK(frame, previous_frame, matched_points, matching_points, status, error);
+	return matching_points;
 }

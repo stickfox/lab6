@@ -2,6 +2,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
+#include <opencv2/video.hpp>
 #include <iostream>
 
 
@@ -23,12 +24,14 @@ public:
 	std::vector<cv::Mat> panoramics;
 
 	/* Constructor */
-	ObjectTracking(cv::String path, double half_FoV);
+	ObjectTracking();
 
 	/* Find final panorama merging together the images */
+	std::vector<cv::Point2f> getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points);
 
 private:
 
 	/* Loads images from a path */
+	
 
 };
