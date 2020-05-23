@@ -3,13 +3,13 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 #include <iostream>
-#include "ObjectRecognition.h"
+#include "ObjectTracker.h"
 
 using namespace cv;
 using namespace std;
 
 /* Constructor */
-ObjectRecognition::ObjectRecognition(cv::VideoCapture vid_cap, cv::Mat obj) {
+ObjectTracker::ObjectTracker(cv::VideoCapture vid_cap, cv::Mat obj) {
 	video = vid_cap;
 	object = obj;
 	matcher = cv::BFMatcher(cv::NORM_HAMMING, true);
@@ -18,21 +18,16 @@ ObjectRecognition::ObjectRecognition(cv::VideoCapture vid_cap, cv::Mat obj) {
 
 
 /* Compute features of an image using ORB */
-void ObjectRecognition::computeFeatures(cv::Mat projection, std::vector<cv::KeyPoint>* keypoint, cv::Mat* descriptor) {
+void ObjectTracker::computeFeatures(cv::Mat projection, std::vector<cv::KeyPoint>* keypoint, cv::Mat* descriptor) {
 	orb->detectAndCompute(projection, cv::Mat(), *keypoint, *descriptor);
 }
 
 
 /* Compute the initial cutting points in two consecutive images */
-std::vector<cv::Point2f> ObjectRecognition::getMatchingPoints(cv::Mat video_image, cv::Mat object_image) {
+std::vector<cv::Point2f> ObjectTracker::getMatchingPoints(cv::Mat video_image, cv::Mat object_image) {
 	std::vector<cv::KeyPoint> keypoint1, keypoint2;
 	cv::Mat descriptor1, descriptor2;
 	std::vector<cv::DMatch> matches;
-
-	cv::Size size(video_image.cols * 0.5, video_image.rows * 0.5);
-	cv::resize(video_image, video_image, size);
-	cv::Size size2(object_image.cols * 0.5, object_image.rows * 0.5);
-	cv::resize(object_image, object_image, size2);
 
 	/* Extract keypoints and their descriptors, then match the keypoints */
 	computeFeatures(object_image, &keypoint1, &descriptor1);
@@ -99,18 +94,22 @@ std::vector<cv::Point2f> ObjectRecognition::getMatchingPoints(cv::Mat video_imag
 	cv::namedWindow("MATCH");
 	cv::imshow("MATCH", matching);
 	cv::waitKey(0);
+	cv::destroyAllWindows();
+
+	object_inliers = inliers1;
 
 	return inliers2;
 }
 
 
 /* Draw a rectangul on the regnized object */
-void ObjectRecognition::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, cv::Mat previous_points) {
+void ObjectTracker::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, std::vector<cv::Point2f> object_points) {
+
 	/* Find the mask that highlights the inliers */
 	cv::Mat h;
 	cv::Mat inlier_mask;
 	float ransacThreshold = 3.0;
-	h = cv::findHomography(previous_points, points, RANSAC, ransacThreshold, inlier_mask);
+	h = cv::findHomography(object_inliers, points, RANSAC, ransacThreshold, inlier_mask);
 	cout << h << endl;
 
 	// Get the corners from the image ( the object to be "detected" )
@@ -128,6 +127,14 @@ void ObjectRecognition::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> p
 	cv::line(*image, scene_corners[1], scene_corners[2], cv::Scalar(0, 0, 255), 2);
 	cv::line(*image, scene_corners[2], scene_corners[3], cv::Scalar(0, 0, 255), 2);
 	cv::line(*image, scene_corners[3], scene_corners[0], cv::Scalar(0, 0, 255), 2);
+}
 
-	//return scene_corners;
+
+std::vector<cv::Point2f> ObjectTracker::getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points) {
+	std::vector<cv::Point2f> matching_points;
+	std::vector<uchar> status;
+	std::vector<float> error;
+	cv::calcOpticalFlowPyrLK(frame, previous_frame, matched_points, matching_points, status, error);
+	drawRectangle(&frame, matching_points, matched_points);
+	return matching_points;
 }

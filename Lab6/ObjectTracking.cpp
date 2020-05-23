@@ -2,6 +2,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
+#include <opencv2/video.hpp>
 #include <iostream>
 #include "ObjectTracking.h"
 
@@ -12,7 +13,7 @@ using namespace std;
 ObjectTracking::ObjectTracking() {
 }
 
-std::vector<cv::Point2f> getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points) {
+std::vector<cv::Point2f> ObjectTracking::getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points) {
 	std::vector<cv::Point2f> matching_points;
 	std::vector<uchar> status;
 	std::vector<float> error;

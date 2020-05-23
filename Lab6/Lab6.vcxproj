@@ -151,12 +151,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ObjectTracking.cpp" />
-    <ClCompile Include="ObjectRecognition.cpp" />
+    <ClCompile Include="ObjectTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ObjectRecognition.h" />
-    <ClInclude Include="ObjectTracking.h" />
+    <ClInclude Include="ObjectTracker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

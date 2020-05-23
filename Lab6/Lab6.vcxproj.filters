@@ -18,18 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectTracking.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectRecognition.cpp">
+    <ClCompile Include="ObjectTracker.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ObjectRecognition.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectTracking.h">
+    <ClInclude Include="ObjectTracker.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>

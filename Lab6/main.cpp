@@ -3,8 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 #include <iostream>
-#include "ObjectRecognition.h"
-#include "ObjectTracking.h"
+#include "ObjectTracker.h"
 
 using namespace cv;
 using namespace std;
@@ -22,40 +21,64 @@ int main(int argc, char** argv) {
 		video_path = argv[1];
 		object_path = argv[2];
 	}
-	cv::VideoCapture video(video_path);
+	cv::VideoCapture video_cap(video_path);
 	cv::Mat object = cv::imread(object_path);
 	if (object.empty()) {
 		cout << "Error: unable to read file " << object_path << endl;
 	}
-	ObjectRecognition recognition = ObjectRecognition(video, object);
-	ObjectTracking tracking = ObjectTracking();
+
+	/* Resize the image to improve visualization */
+	cv::Size size2(object.cols * 0.5, object.rows * 0.5);
+	cv::resize(object, object, size2);
+
+	ObjectTracker tracker = ObjectTracker(video_cap, object);
 	
 	int k = 0;
+	char c = 0;
+	int frame_width = 0, frame_height = 0;
 	cv::Mat frame, previous_frame;
 	std::vector<cv::Point2f> matching_points, matched_points;
 	std::vector<char> error;
+	cv::VideoWriter video_writer;
+	cv::namedWindow("Frame");
 
-	if (video.isOpened()) {
+	if (video_cap.isOpened()) {
 		for (;;) {
-			video >> frame;
+			video_cap >> frame;
+			if (frame.empty())
+				break;
+			cv::Size size(frame.cols * 0.5, frame.rows * 0.5);
+			cv::resize(frame, frame, size); // resize also the frame
 			if (k == 0) {
-				matched_points = recognition.getMatchingPoints(frame, object);
-				//previous_frame = frame;
+				frame_width = video_cap.get(cv::CAP_PROP_FRAME_WIDTH);
+				frame_height = video_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+				video_writer = cv::VideoWriter("outcpp.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, Size(frame_width, frame_height)); //fourcc('P', 'I', 'M', '1')
+				matched_points = tracker.getMatchingPoints(frame, object);
+				previous_frame = frame;
 			}
 			else {
-				//matching_points = tracking.getTrackingPoints(frame, previous_frame, matched_points);
-				//previous_frame = frame;
+				matching_points = tracker.getTrackingPoints(frame, previous_frame, matched_points);
+				previous_frame = frame;
 			}
+			video_writer.write(frame);
+			imshow("Frame", frame);
+			char c = (char)waitKey(1);
+			if (c == 27)
+				break;
 			k++;
 		}
 	}
+	else {
+		cout << "Error opening video stream" << endl;
+		return -1;
+	}
 
+	/* When everything done, release the video capture and write object */
+	video_cap.release();
+	video_writer.release();
 
-	/*
-	cv::namedWindow("Final Panorama", WINDOW_AUTOSIZE);
-	cv::imshow("Final Panorama", result);
 	cv::waitKey(0);
-	cv::destroyAllWindows();*/
+	cv::destroyAllWindows();
 
 	return 0;
 }

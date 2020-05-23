@@ -1,2 +1,24 @@
 ﻿  main.cpp
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\main.cpp(31,48): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\main.cpp(31,29): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\main.cpp(50,47): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\main.cpp(50,29): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\main.cpp(53,32): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\Lab6\main.cpp(54,33): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
   Lab6.vcxproj -> C:\Users\trent\Documents\VISUAL_STUDIO_WORKSPACE\Repo\lab6\x64\Debug\Lab6.exe

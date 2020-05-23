@@ -26,7 +26,7 @@ public:
 	/* Constructor */
 	ObjectTracking();
 
-	/* Find final panorama merging together the images */
+	/* Track the object points throw the frames */
 	std::vector<cv::Point2f> getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points);
 
 private:
