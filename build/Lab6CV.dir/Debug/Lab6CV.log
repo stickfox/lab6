@@ -49,16 +49,16 @@ C:\Users\giovi\source\repos\lab6\src\main.cpp(31,29): warning C4244: 'argomento'
           [
               _Tp=int
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(50,47): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(54,47): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(50,29): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(54,29): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(53,32): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\giovi\source\repos\lab6\src\main.cpp(54,33): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(57,32): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(58,33): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
   Lab6CV.vcxproj -> C:\Users\giovi\source\repos\lab6\build\Debug\Lab6CV.exe

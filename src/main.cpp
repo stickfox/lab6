@@ -33,7 +33,6 @@ int main(int argc, char** argv) {
 
 	ObjectTracker tracker = ObjectTracker(video_cap, object);
 	
-	int k = 0;
 	char c = 0;
 	int frame_width = 0, frame_height = 0;
 	cv::Mat frame, previous_frame;
@@ -43,29 +42,36 @@ int main(int argc, char** argv) {
 	cv::namedWindow("Frame");
 
 	if (video_cap.isOpened()) {
-		for (;;) {
+		for (int i = 0;; i++) {
+			if ((i % 10) != 0)
+				continue;
+
 			video_cap >> frame;
 			if (frame.empty())
 				break;
+
+			//cout << "	-- TEST " << i << " | " << (i % 1000000) << endl;
 			cv::Size size(frame.cols * 0.5, frame.rows * 0.5);
 			cv::resize(frame, frame, size); // resize also the frame
-			if (k == 0) {
+			if (i == 0) {
 				frame_width = video_cap.get(cv::CAP_PROP_FRAME_WIDTH);
 				frame_height = video_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
 				video_writer = cv::VideoWriter("outcpp.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, Size(frame_width, frame_height)); //fourcc('P', 'I', 'M', '1')
 				matched_points = tracker.getMatchingPoints(frame, object);
 				previous_frame = frame;
+				matching_points = matched_points;
 			}
 			else {
-				matching_points = tracker.getTrackingPoints(frame, previous_frame, matched_points);
-				previous_frame = frame;
+				matching_points = tracker.getTrackingPoints(frame, previous_frame, matching_points);
+				//previous_frame = frame;
+				frame.copyTo(previous_frame);
 			}
+
 			video_writer.write(frame);
 			imshow("Frame", frame);
 			char c = (char)waitKey(1);
 			if (c == 27)
 				break;
-			k++;
 		}
 	}
 	else {

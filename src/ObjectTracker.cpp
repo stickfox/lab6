@@ -103,14 +103,14 @@ std::vector<cv::Point2f> ObjectTracker::getMatchingPoints(cv::Mat video_image, c
 
 
 /* Draw a rectangul on the regnized object */
-void ObjectTracker::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, std::vector<cv::Point2f> object_points) {
+void ObjectTracker::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> previous_points, std::vector<cv::Point2f> current_points) {
 
 	/* Find the mask that highlights the inliers */
 	cv::Mat h;
 	cv::Mat inlier_mask;
 	float ransacThreshold = 3.0;
-	h = cv::findHomography(object_inliers, points, RANSAC, ransacThreshold, inlier_mask);
-	cout << h << endl;
+	h = cv::findHomography(object_inliers, current_points, RANSAC, ransacThreshold, inlier_mask);
+	//cout << h << endl;
 
 	// Get the corners from the image ( the object to be "detected" )
 	std::vector<cv::Point2f> obj_corners(4);
@@ -134,7 +134,13 @@ std::vector<cv::Point2f> ObjectTracker::getTrackingPoints(cv::Mat frame, cv::Mat
 	std::vector<cv::Point2f> matching_points;
 	std::vector<uchar> status;
 	std::vector<float> error;
-	cv::calcOpticalFlowPyrLK(frame, previous_frame, matched_points, matching_points, status, error);
-	drawRectangle(&frame, matching_points, matched_points);
+
+	cv::Size search_window_size(7, 7);
+	int maximal_pyramid_level = 3;
+	cv::TermCriteria stop_criteria(cv::TermCriteria::Type::COUNT | cv::TermCriteria::Type::EPS, 30, 0.001);
+	cv::calcOpticalFlowPyrLK(previous_frame, frame, matched_points, matching_points, status, error, search_window_size, maximal_pyramid_level/*, stop_criteria*/);
+
+	drawRectangle(&frame, matched_points, matching_points);
+
 	return matching_points;
 }
