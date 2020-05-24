@@ -1,0 +1,5 @@
+C:/Users/giovi/source/repos/lab6/build/CMakeFiles/ObjectTracker.dir
+C:/Users/giovi/source/repos/lab6/build/CMakeFiles/ObjectTracking.dir
+C:/Users/giovi/source/repos/lab6/build/CMakeFiles/Lab6CV.dir
+C:/Users/giovi/source/repos/lab6/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/giovi/source/repos/lab6/build/CMakeFiles/ZERO_CHECK.dir

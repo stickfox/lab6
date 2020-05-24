@@ -1,0 +1,10 @@
+^C:\USERS\GIOVI\SOURCE\REPOS\LAB6\BUILD\CMAKEFILES\1165D47872C6BA589D142F19CC9A9CA0\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/giovi/source/repos/lab6 -BC:/Users/giovi/source/repos/lab6/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/giovi/source/repos/lab6/build/Lab6CV.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
