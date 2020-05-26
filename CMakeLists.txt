@@ -10,11 +10,6 @@ add_library(ObjectTracker
 	src/ObjectTracker.cpp
 )
 
-add_library(ObjectTracking
-	include/ObjectTracking.h
-	src/ObjectTracking.cpp
-)
-
 add_executable(${PROJECT_NAME}
 	src/main.cpp)
 

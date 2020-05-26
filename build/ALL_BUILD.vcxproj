@@ -177,10 +177,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{88648E15-5323-393D-9BD3-36416FED6583}</Project>
       <Name>ObjectTracker</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\giovi\source\repos\lab6\build\ObjectTracking.vcxproj">
-      <Project>{F4850DCC-9CAB-3D9A-8830-F74F752CA147}</Project>
-      <Name>ObjectTracking</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
