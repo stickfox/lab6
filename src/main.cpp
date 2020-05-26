@@ -40,17 +40,21 @@ int main(int argc, char** argv) {
 	std::vector<char> error;
 	cv::VideoWriter video_writer;
 	cv::namedWindow("Frame");
-
+	int i = 0;
 	if (video_cap.isOpened()) {
-		for (int i = 0;; i++) {
-			if ((i % 10) != 0)
-				continue;
+		//for (int i = 0;; i++) {
+		//	if ((i % 10) != 0)
+		//		continue;
+		while (video_cap.read(frame))
+		{
+			video_cap.read(frame);
+			video_cap.read(frame);
+			video_cap.read(frame);
 
-			video_cap >> frame;
+			//video_cap >> frame;
 			if (frame.empty())
 				break;
 
-			//cout << "	-- TEST " << i << " | " << (i % 1000000) << endl;
 			cv::Size size(frame.cols * 0.5, frame.rows * 0.5);
 			cv::resize(frame, frame, size); // resize also the frame
 			if (i == 0) {
@@ -67,11 +71,13 @@ int main(int argc, char** argv) {
 				frame.copyTo(previous_frame);
 			}
 
-			video_writer.write(frame);
+			//video_writer.write(frame);
 			imshow("Frame", frame);
 			char c = (char)waitKey(1);
 			if (c == 27)
 				break;
+
+			i++;
 		}
 	}
 	else {

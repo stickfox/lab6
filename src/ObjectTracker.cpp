@@ -14,6 +14,7 @@ ObjectTracker::ObjectTracker(cv::VideoCapture vid_cap, cv::Mat obj) {
 	object = obj;
 	matcher = cv::BFMatcher(cv::NORM_HAMMING, true);
 	orb = cv::ORB::create(MAX_FEATURES);
+	prev_scene_corners = std::vector<cv::Point2f>(4);
 }
 
 
@@ -103,30 +104,36 @@ std::vector<cv::Point2f> ObjectTracker::getMatchingPoints(cv::Mat video_image, c
 
 
 /* Draw a rectangul on the regnized object */
-void ObjectTracker::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> previous_points, std::vector<cv::Point2f> current_points) {
+void ObjectTracker::drawRectangle(cv::Mat* image, std::vector<cv::Point2f> previous_points, std::vector<cv::Point2f> current_points, double norm) {
 
 	/* Find the mask that highlights the inliers */
 	cv::Mat h;
 	cv::Mat inlier_mask;
 	float ransacThreshold = 3.0;
-	h = cv::findHomography(object_inliers, current_points, RANSAC, ransacThreshold, inlier_mask);
-	//cout << h << endl;
 
-	// Get the corners from the image ( the object to be "detected" )
-	std::vector<cv::Point2f> obj_corners(4);
-	obj_corners[0] = cv::Point2f(0, 0);
-	obj_corners[1] = cv::Point2f(object.cols - 1, 1);
-	obj_corners[2] = cv::Point2f(object.cols - 1, object.rows - 1);
-	obj_corners[3] = cv::Point2f(1, object.rows - 1);
-	std::vector<cv::Point2f> scene_corners(4);
-	scene_corners[0] = cv::Point2f(1, 1);
+	if (norm > 1)
+	{
+		h = cv::findHomography(object_inliers, current_points, RANSAC, ransacThreshold, inlier_mask);
+		//cout << h << endl;
 
-	perspectiveTransform(obj_corners, scene_corners, h);
+		// Get the corners from the image ( the object to be "detected" )
+		std::vector<cv::Point2f> obj_corners(4);
+		obj_corners[0] = cv::Point2f(0, 0);
+		obj_corners[1] = cv::Point2f(object.cols - 1, 1);
+		obj_corners[2] = cv::Point2f(object.cols - 1, object.rows - 1);
+		obj_corners[3] = cv::Point2f(1, object.rows - 1);
+		std::vector<cv::Point2f> scene_corners(4);
+		scene_corners[0] = cv::Point2f(1, 1);
+
+		perspectiveTransform(obj_corners, scene_corners, h);
+
+		prev_scene_corners = scene_corners;
+	}
 	//Draw lines between the corners (the mapped object in the scene )
-	cv::line(*image, scene_corners[0], scene_corners[1], cv::Scalar(0, 0, 255), 2);
-	cv::line(*image, scene_corners[1], scene_corners[2], cv::Scalar(0, 0, 255), 2);
-	cv::line(*image, scene_corners[2], scene_corners[3], cv::Scalar(0, 0, 255), 2);
-	cv::line(*image, scene_corners[3], scene_corners[0], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, prev_scene_corners[0], prev_scene_corners[1], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, prev_scene_corners[1], prev_scene_corners[2], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, prev_scene_corners[2], prev_scene_corners[3], cv::Scalar(0, 0, 255), 2);
+	cv::line(*image, prev_scene_corners[3], prev_scene_corners[0], cv::Scalar(0, 0, 255), 2);
 }
 
 
@@ -137,10 +144,16 @@ std::vector<cv::Point2f> ObjectTracker::getTrackingPoints(cv::Mat frame, cv::Mat
 
 	cv::Size search_window_size(7, 7);
 	int maximal_pyramid_level = 3;
-	cv::TermCriteria stop_criteria(cv::TermCriteria::Type::COUNT | cv::TermCriteria::Type::EPS, 30, 0.001);
+	cv::TermCriteria stop_criteria(cv::TermCriteria::Type::COUNT | cv::TermCriteria::Type::EPS, 10, 1);
 	cv::calcOpticalFlowPyrLK(previous_frame, frame, matched_points, matching_points, status, error, search_window_size, maximal_pyramid_level/*, stop_criteria*/);
 
-	drawRectangle(&frame, matched_points, matching_points);
+	std::vector<cv::Point2f> diff;
+	// old points - new points
+	cv::absdiff(matched_points, matching_points, diff);
+	double norm = cv::norm(diff);
+
+	//cout << "norm = " << norm << endl;
+	drawRectangle(&frame, matched_points, matching_points, norm);
 
 	return matching_points;
 }

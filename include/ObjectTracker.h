@@ -14,11 +14,6 @@ public:
 
 	const float RATIO = 3.0f; // RATIO for matches refinement
 	const int MAX_FEATURES = 500; // maximum of features found by ORB
-	cv::VideoCapture video;
-	cv::Mat object;
-	cv::Ptr<cv::Feature2D> orb;
-	cv::BFMatcher matcher;
-	std::vector<cv::Point2f> object_inliers;
 
 	/* Constructor */
 	ObjectTracker(cv::VideoCapture vid_cap, cv::Mat obj);
@@ -35,6 +30,16 @@ private:
 	void computeFeatures(cv::Mat projection, std::vector<cv::KeyPoint>* keypoint, cv::Mat* descriptor);
 
 	/* Draw a rectangul on the regnized object */
-	void drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, std::vector<cv::Point2f> object_points);
+	void drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, std::vector<cv::Point2f> object_points, double norm);
 
+	/////////////////////////////////////////////////////
+	// Attributes
+	/////////////////////////////////////////////////////
+
+	cv::VideoCapture video;
+	cv::Mat object;
+	cv::Ptr<cv::Feature2D> orb;
+	cv::BFMatcher matcher;
+	std::vector<cv::Point2f> object_inliers;
+	std::vector<cv::Point2f> prev_scene_corners;
 };
