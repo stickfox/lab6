@@ -2,6 +2,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
+#include <opencv2/videoio.hpp>  // Video write
 #include <iostream>
 #include "ObjectTracker.cpp"
 
@@ -9,115 +10,139 @@ using namespace cv;
 using namespace std;
 
 int main(int argc, char** argv) {
-	cv::Mat loading = cv::imread("../data/loading.png");
-	cv::namedWindow("Frame");
-	imshow("Frame", loading);
-	waitKey(1000);
+	// Loading splash image
+	Mat loading = imread("../data/loading.png");
+	if (loading.empty())
+		loading = imread("../../data/loading.png");
+	if (!loading.empty())
+	{
+		namedWindow("Frame");
+		imshow("Frame", loading);
+		waitKey(1000);
+	}
 
+	// Read the video file and object image files
+	String video_path;
+	String objects_path;
 
-	/* Read the video file and object image file */
-	cv::String video_path;
-	cv::String object_path1;
-	cv::String object_path2;
-	cv::String object_path3;
-	cv::String object_path4;
-	if (argc != 3) {
+	if (argc < 4) {
 		cout << "If you don't set the file paths from the command line, I select video '../data/video.mov' and object image '../data/objects/obj2.png'\n" << endl;
 		video_path = "../data/video.mov";
-		object_path1 = "../data/objects/obj1.png";
-		object_path2 = "../data/objects/obj2.png";
-		object_path3 = "../data/objects/obj3.png";
-		object_path4 = "../data/objects/obj4.png";
+		objects_path = "../data/objects/obj*.png";
 	}
 	else {
 		video_path = argv[1];
-		//object_path = argv[2];
+		objects_path = argv[2];
+		objects_path.append("*.");
+		objects_path.append(argv[3]);
 	}
-	cv::VideoCapture video_cap(video_path);
-	cv::Mat object1 = cv::imread(object_path1);
-	cv::Mat object2 = cv::imread(object_path2);
-	cv::Mat object3 = cv::imread(object_path3);
-	cv::Mat object4 = cv::imread(object_path4);
-	//if (object.empty()) {
-	//	cout << "Error: unable to read file " << object_path << endl;
-	//}
 
-	/* Resize the image to improve visualization */
-	cv::Size size2(object1.cols * 0.5, object1.rows * 0.5);
-	cv::resize(object1, object1, size2);
+	VideoCapture video_cap(video_path);
 
-	cv::Size size3(object2.cols * 0.5, object2.rows * 0.5);
-	cv::resize(object2, object2, size3);
+	vector<String> filenames;
+	glob(objects_path, filenames, false);
+	vector<Mat> objects;
+	for (int i = 0; i < filenames.size(); i++)
+	{
+		cout << "Filename " << i << ": " << filenames[i] << endl;
+		Mat tmp = imread(filenames[i]);
 
-	cv::Size size4(object3.cols * 0.5, object3.rows * 0.5);
-	cv::resize(object3, object3, size4);
+		if (!tmp.empty())
+			objects.push_back(tmp);
+	}
+	
+	if (objects.size() < 1) {
+		cout << "Error: unable to read file " << objects_path << endl;
+		cout << "**** Parameters are video_path, images folder + images prefix, images extensions." << endl;
+		cout << "		executable ../data/video.mov ../data/objects/obj png" << endl;
+	}
 
-	cv::Size size5(object4.cols * 0.5, object4.rows * 0.5);
-	cv::resize(object4, object4, size5);
+	cout << "\n\n" << endl;
 
-	ObjectTracker tracker1 = ObjectTracker(video_cap, object1, cv::Scalar(0, 0, 255));
-	ObjectTracker tracker2 = ObjectTracker(video_cap, object2, cv::Scalar(0, 255, 0));
-	ObjectTracker tracker3 = ObjectTracker(video_cap, object3, cv::Scalar(255, 0, 0));
-	ObjectTracker tracker4 = ObjectTracker(video_cap, object4, cv::Scalar(255, 100, 250));
+	 // Resize the image to improve visualization
+	for (int i = 0; i < objects.size(); i++)
+	{
+		Size size2(objects[i].cols * 0.5, objects[i].rows * 0.5);
+		resize(objects[i], objects[i], size2);
+
+	}
+
+	// Initialize Trackers
+	vector<Scalar> colors{ Scalar(0, 0, 255),
+							Scalar(0, 255, 216),
+							Scalar(255, 0, 0),
+							Scalar(180, 130, 255) };
+	vector<ObjectTracker> trackers;
+	for (int i = 0; i < objects.size(); i++)
+		trackers.push_back(ObjectTracker(objects[i], colors[i % colors.size()]));
 
 	char c = 0;
 	int frame_width = 0, frame_height = 0;
-	cv::Mat frame, previous_frame;
-	std::vector<cv::Point2f> matching_points1, matched_points1;
-	std::vector<cv::Point2f> matching_points2, matched_points2;
-	std::vector<cv::Point2f> matching_points3, matched_points3;
-	std::vector<cv::Point2f> matching_points4, matched_points4;
-	std::vector<char> error;
-	cv::VideoWriter video_writer;
+	Mat frame, previous_frame;
+	vector<vector<Point2f>> matching_points;
+	vector<char> error;
+	VideoWriter video_writer;
 	
 	int i = 0;
+	Mat clean_copy;
 	if (video_cap.isOpened()) {
-		//for (int i = 0;; i++) {
-		//	if ((i % 10) != 0)
-		//		continue;
 		while (video_cap.read(frame))
 		{
+			// Skip some frames to enhance speed
 			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
-			video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
+			//video_cap.read(frame);
 
-			//video_cap >> frame;
 			if (frame.empty())
 				break;
 
-			cv::Size size(frame.cols * 0.5, frame.rows * 0.5);
-			cv::resize(frame, frame, size); // resize also the frame
-			if (i == 0) {
-				frame_width = video_cap.get(cv::CAP_PROP_FRAME_WIDTH);
-				frame_height = video_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
-				video_writer = cv::VideoWriter("outcpp.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, Size(frame_width, frame_height)); //fourcc('P', 'I', 'M', '1')
-				matched_points1 = tracker1.getMatchingPoints(frame, object1, 6500, 30000);
-				matched_points2 = tracker2.getMatchingPoints(frame, object2, 450, 450);
-				matched_points3 = tracker3.getMatchingPoints(frame, object3, 500, 500);
-				matched_points4 = tracker4.getMatchingPoints(frame, object4, 6500, 30000);
+			// Resize also the current frame
+			Size size(frame.cols * 0.5, frame.rows * 0.5);
+			resize(frame, frame, size);
 
-				frame.copyTo(previous_frame);
-				matching_points1 = matched_points1;
-				matching_points2 = matched_points2;
-				matching_points3 = matched_points3;
-				matching_points4 = matched_points4;
+			// First iteration, initialize values and find features
+			if (i == 0) {
+				frame.copyTo(clean_copy);
+
+				frame_width = frame.size().width;
+				frame_height = frame.size().height;
+				video_writer.open("output.mp4", VideoWriter::fourcc('M', 'P', '4', 'V'), video_cap.get(CAP_PROP_FPS), Size(frame_width, frame_height), true);
+
+				// Use SIFT
+				for (int i = 0; i < objects.size(); i++)
+				{
+					// if 4th param is 0 -> use SIFT, if is 1 -> use ORB
+					matching_points.push_back(trackers[i].getMatchingPoints(clean_copy, &frame, objects[i], 0, 0, 0));
+				}
+				// Use ORB
+				//for (int i = 0; i < objects.size(); i++)
+				//{
+				//	vector<int> max1{ 7500, 500, 500, 6500 };
+				//	vector<int> max2{ 40000, 500, 500, 30000 };
+
+				//	matching_points.push_back(trackers[i].getMatchingPoints(clean_copy, &frame, objects[i], 1, max1[i % max1.size()], max2[i % max2.size()]));
+				//}
+
+				clean_copy.copyTo(previous_frame);
 			}
 			else {
-				matching_points1 = tracker1.getTrackingPoints(frame, previous_frame, matching_points1);
-				matching_points2 = tracker2.getTrackingPoints(frame, previous_frame, matching_points2);
-				matching_points3 = tracker3.getTrackingPoints(frame, previous_frame, matching_points3);
-				matching_points4 = tracker4.getTrackingPoints(frame, previous_frame, matching_points4);
+				// Other iterations, find flow and draw rectangle and features for each object
+				frame.copyTo(clean_copy);
 
-				frame.copyTo(previous_frame);
+				for (int i = 0; i < objects.size(); i++)
+					matching_points[i] = trackers[i].getTrackingPoints(clean_copy, &frame, previous_frame, matching_points[i]);
+
+				clean_copy.copyTo(previous_frame);
 			}
 
-			//video_writer.write(frame);
+			// Export frame and show it
+			video_writer.write(frame);
 			imshow("Frame", frame);
 			char c = (char)waitKey(1);
 			if (c == 27)
@@ -135,8 +160,10 @@ int main(int argc, char** argv) {
 	video_cap.release();
 	video_writer.release();
 
-	cv::waitKey(0);
-	cv::destroyAllWindows();
+	cout << "\nFINISH!\n\n" << endl;
+
+	waitKey(0);
+	destroyAllWindows();
 
 	return 0;
 }

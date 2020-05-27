@@ -12,34 +12,37 @@ class ObjectTracker
 {
 public:
 
-	const float RATIO = 3.0f; // RATIO for matches refinement
+	const float RATIO = 3.0f;	   // RATIO for matches refinement
 	const int MAX_FEATURES = 5000; // maximum of features found by ORB
 
 	/* Constructor */
-	ObjectTracker(cv::VideoCapture vid_cap, cv::Mat obj, cv::Scalar color);
+	ObjectTracker(Mat obj, Scalar color);
 
 	/* Compute the initial cutting points in two consecutive images */
-	std::vector<cv::Point2f> getMatchingPoints(cv::Mat video_image, cv::Mat object_image, int max_features1, int max_features2);
+	vector<Point2f> ObjectTracker::getMatchingPoints(Mat clean_image, Mat* output_image, Mat object_image, int use_orb, int max_features1, int max_features2);
 
 	/* Track the object points throw the frames */
-	std::vector<cv::Point2f> getTrackingPoints(cv::Mat frame, cv::Mat previous_frame, std::vector<cv::Point2f> matched_points);
+	vector<Point2f> ObjectTracker::getTrackingPoints(Mat clean_frame, Mat* output_frame, Mat previous_frame, vector<Point2f> matched_points);
 
 private:
 
 	/* Compute features of an image using ORB */
-	void ObjectTracker::computeFeatures(cv::Mat projection, std::vector<cv::KeyPoint>* keypoint, cv::Mat* descriptor, int max_features);
+	void ObjectTracker::computeFeaturesOrb(Mat projection, vector<KeyPoint>* keypoint, Mat* descriptor, int max_features);
+	void ObjectTracker::computeFeaturesSift(Mat projection, vector<KeyPoint>* keypoint, Mat* descriptor);
 
 	/* Draw a rectangul on the regnized object */
-	void drawRectangle(cv::Mat* image, std::vector<cv::Point2f> points, std::vector<cv::Point2f> object_points, double norm);
+	void ObjectTracker::computeHomography(Mat* image, vector<Point2f> current_points, double norm, vector<uchar> status);
+	void ObjectTracker::drawRectangle(Mat* image);
+	void ObjectTracker::drawExtractedFeatures(Mat* image);
 
 	/////////////////////////////////////////////////////
 	// Attributes
 	/////////////////////////////////////////////////////
 
-	cv::VideoCapture video;
-	cv::Mat object;
-	cv::BFMatcher matcher;
-	std::vector<cv::Point2f> object_inliers;
-	std::vector<cv::Point2f> prev_scene_corners;
-	cv::Scalar line_color;
+	Mat object;
+	BFMatcher matcher;
+	vector<Point2f> object_inliers;
+	vector<Point2f> prev_scene_corners;
+	vector<Point2f> prev_scene_features_points;
+	Scalar line_color;
 };
