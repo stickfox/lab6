@@ -33,6 +33,10 @@ int main(int argc, char** argv) {
 	else {
 		video_path = argv[1];
 		objects_path = argv[2];
+		char last_char = objects_path.at(objects_path.length() - 1);
+		if (last_char != '/' && last_char != '\\')
+			objects_path.append("/");
+
 		objects_path.append("*.");
 		objects_path.append(argv[3]);
 	}
@@ -94,8 +98,8 @@ int main(int argc, char** argv) {
 		{
 			// Skip some frames to enhance speed
 			video_cap.read(frame);
-			for (int i = 0; i< 8; i++)
-				video_cap.read(frame);
+			//for (int i = 0; i< 8; i++)
+			//	video_cap.read(frame);
 
 			if (frame.empty())
 				break;
