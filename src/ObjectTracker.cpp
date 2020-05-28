@@ -36,7 +36,7 @@ void ObjectTracker::computeFeaturesSift(Mat projection, vector<KeyPoint>* keypoi
 }
 
 /* Compute the initial cutting points in two consecutive images */
-vector<Point2f> ObjectTracker::getMatchingPoints(Mat clean_image, Mat* output_image, Mat object_image, int use_orb, int max_features1, int max_features2) {
+vector<Point2f> ObjectTracker::getMatchingPoints(Mat object_image, Mat clean_image, Mat* output_image, int use_orb=0, int max_features1=500, int max_features2=500) {
 	vector<KeyPoint> keypoint1, keypoint2;
 	Mat descriptor1, descriptor2;
 	vector<DMatch> matches;

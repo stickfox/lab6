@@ -52,9 +52,13 @@ int main(int argc, char** argv) {
 	}
 	
 	if (objects.size() < 1) {
-		cout << "Error: unable to read file " << objects_path << endl;
-		cout << "**** Parameters are video_path, images folder + images prefix, images extensions." << endl;
-		cout << "		executable ../data/video.mov ../data/objects/obj png" << endl;
+		cout << "\n\n--------------------------------------" << endl;
+		cout << "Error: unable to read file " << objects_path << "\n" << endl;
+		cout << "**** Parameters are video_path, images folder, images extension." << endl;
+		cout << "		executable ../data/video.mov ../data/objects/ png\n" << endl;
+		cout << "!!! REMEMBER the last slash/backslash after the folder name!" << endl;
+		cout << "--------------------------------------\n\n" << endl;
+		return 0;
 	}
 
 	cout << "\n\n" << endl;
@@ -90,14 +94,8 @@ int main(int argc, char** argv) {
 		{
 			// Skip some frames to enhance speed
 			video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
-			//video_cap.read(frame);
+			for (int i = 0; i< 8; i++)
+				video_cap.read(frame);
 
 			if (frame.empty())
 				break;
@@ -118,7 +116,7 @@ int main(int argc, char** argv) {
 				for (int i = 0; i < objects.size(); i++)
 				{
 					// if 4th param is 0 -> use SIFT, if is 1 -> use ORB
-					matching_points.push_back(trackers[i].getMatchingPoints(clean_copy, &frame, objects[i], 0, 0, 0));
+					matching_points.push_back(trackers[i].getMatchingPoints(objects[i], clean_copy, &frame));
 				}
 				// Use ORB
 				//for (int i = 0; i < objects.size(); i++)
@@ -126,7 +124,7 @@ int main(int argc, char** argv) {
 				//	vector<int> max1{ 7500, 500, 500, 6500 };
 				//	vector<int> max2{ 40000, 500, 500, 30000 };
 
-				//	matching_points.push_back(trackers[i].getMatchingPoints(clean_copy, &frame, objects[i], 1, max1[i % max1.size()], max2[i % max2.size()]));
+				//	matching_points.push_back(trackers[i].getMatchingPoints(objects[i], clean_copy, &frame, 1, max1[i % max1.size()], max2[i % max2.size()]));
 				//}
 
 				clean_copy.copyTo(previous_frame);

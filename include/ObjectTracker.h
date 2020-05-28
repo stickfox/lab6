@@ -19,7 +19,7 @@ public:
 	ObjectTracker(Mat obj, Scalar color);
 
 	/* Compute the initial cutting points in two consecutive images */
-	vector<Point2f> ObjectTracker::getMatchingPoints(Mat clean_image, Mat* output_image, Mat object_image, int use_orb, int max_features1, int max_features2);
+	vector<Point2f> ObjectTracker::getMatchingPoints(Mat object_image, Mat clean_image, Mat* output_image, int use_orb, int max_features1, int max_features2);
 
 	/* Track the object points throw the frames */
 	vector<Point2f> ObjectTracker::getTrackingPoints(Mat clean_frame, Mat* output_frame, Mat previous_frame, vector<Point2f> matched_points);

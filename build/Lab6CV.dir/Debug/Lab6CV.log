@@ -39,22 +39,22 @@ C:\Users\giovi\source\repos\lab6\src\ObjectTracker.cpp(159,44): warning C4244: '
           [
               _Tp=float
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(65,53): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(69,53): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(65,30): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(69,30): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(106,43): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(104,43): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
           ]
-C:\Users\giovi\source\repos\lab6\src\main.cpp(106,25): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
+C:\Users\giovi\source\repos\lab6\src\main.cpp(104,25): warning C4244: 'argomento': conversione da 'double' a '_Tp'. Possibile perdita di dati.
           with
           [
               _Tp=int
