@@ -97,8 +97,7 @@ int main(int argc, char** argv) {
 		while (video_cap.read(frame))
 		{
 			// Skip some frames to enhance speed
-			video_cap.read(frame);
-			//for (int i = 0; i< 8; i++)
+			//for (int i = 0; i< 9; i++)
 			//	video_cap.read(frame);
 
 			if (frame.empty())
